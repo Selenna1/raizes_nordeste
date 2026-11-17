@@ -1,5 +1,8 @@
 import express from 'express';
 import pool from '../../infrastructure/database.js';
+import { autenticar } from '../middlewares/auth.middleware.js';
+import { permitirPerfis } from '../middlewares/permissao.middleware.js';
+
 
 const router = express.Router();
 router.get('/', async (req, res) => {
@@ -15,7 +18,7 @@ router.get('/', async (req, res) => {
     });
   }
 });
-router.post('/', async (req, res) => {
+router.post('/', autenticar, permitirPerfis('ADMIN', 'GERENTE'), async (req, res) => {
   const { nome, descricao, preco, categoria, ativo } = req.body;
   if (
     !nome ||
@@ -64,7 +67,7 @@ router.get('/:id', async (req, res) => {
     });
   }
 });
-router.put('/:id', async (req, res) => {
+router.put('/:id', autenticar, permitirPerfis('ADMIN', 'GERENTE'), async (req, res) => {
   const { id } = req.params;
   const { nome, descricao, preco, categoria, ativo } = req.body;
   if (
@@ -103,9 +106,8 @@ router.put('/:id', async (req, res) => {
     });
   }
 }); 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', autenticar, permitirPerfis('ADMIN', 'GERENTE'), async (req, res) => {
   const { id } = req.params;
-
   try {
     const resultado = await pool.query(
       'DELETE FROM produtos WHERE id = $1 RETURNING *',
