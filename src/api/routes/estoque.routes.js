@@ -3,6 +3,18 @@ import pool from '../../infrastructure/database.js';
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /estoque:
+ *   get:
+ *     summary: Consulta todos os registros de estoque
+ *     tags: [Estoque]
+ *     responses:
+ *       200:
+ *         description: Lista de estoque consultada com sucesso
+ *       500:
+ *         description: Erro ao consultar estoque
+ */
 router.get('/', async (req, res) => {
   try {
     const resultado = await pool.query(
@@ -16,6 +28,26 @@ router.get('/', async (req, res) => {
         });
     }
 });
+
+/**
+ * @swagger
+ * /estoque/unidade/{id}:
+ *   get:
+ *     summary: Consulta o estoque de uma unidade
+ *     tags: [Estoque]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador da unidade
+ *     responses:
+ *       200:
+ *         description: Estoque da unidade consultado com sucesso
+ *       500:
+ *         description: Erro ao consultar estoque da unidade
+ */
 router.get('/unidade/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -32,6 +64,40 @@ router.get('/unidade/:id', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /estoque:
+ *   post:
+ *     summary: Cadastra um registro de estoque
+ *     tags: [Estoque]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_unidade
+ *               - id_produto
+ *               - quantidade
+ *             properties:
+ *               id_unidade:
+ *                 type: integer
+ *                 example: 3
+ *               id_produto:
+ *                 type: integer
+ *                 example: 2
+ *               quantidade:
+ *                 type: integer
+ *                 example: 15
+ *     responses:
+ *       201:
+ *         description: Registro de estoque cadastrado com sucesso
+ *       400:
+ *         description: Dados inválidos
+ *       500:
+ *         description: Erro ao cadastrar estoque
+ */
 router.post('/', async (req, res) => {
   const { id_unidade, id_produto, quantidade } = req.body;
   if (
@@ -63,6 +129,42 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+/**
+ * @swagger
+ * /estoque/{id}:
+ *   put:
+ *     summary: Atualiza a quantidade de estoque
+ *     tags: [Estoque]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador do registro de estoque
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantidade
+ *             properties:
+ *               quantidade:
+ *                 type: integer
+ *                 example: 20
+ *     responses:
+ *       200:
+ *         description: Estoque atualizado com sucesso
+ *       400:
+ *         description: Quantidade inválida
+ *       404:
+ *         description: Registro de estoque não encontrado
+ *       500:
+ *         description: Erro ao atualizar estoque
+ */
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const { quantidade } = req.body;
@@ -93,6 +195,28 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
+/**
+ * @swagger
+ * /estoque/{id}:
+ *   delete:
+ *     summary: Remove um registro de estoque
+ *     tags: [Estoque]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador do registro de estoque
+ *     responses:
+ *       200:
+ *         description: Registro de estoque removido com sucesso
+ *       404:
+ *         description: Registro de estoque não encontrado
+ *       500:
+ *         description: Erro ao excluir registro de estoque
+ */
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
