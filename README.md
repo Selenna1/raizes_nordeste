@@ -17,7 +17,7 @@ A aplicação foi desenvolvida utilizando Node.js, Express e PostgreSQL, com aut
 ## 3. Funcionalidades da API
 A API disponibiliza as seguintes funcionalidades:
 - **Autenticação:** cadastro e login de usuários, com autenticação por token JWT.
-- **Usuários:** gerenciamento de dados do usuário e controle de acesso por perfil.
+- **Usuários:** gerenciamento de dados dos usuários e controle de acesso por perfil.
 - **Unidades:** cadastro, consulta, atualização e exclusão de unidades.
 - **Produtos:** cadastro, consulta, atualização e exclusão de produtos.
 - **Estoque:** cadastro, consulta e atualização das quantidades de produtos por unidade.
@@ -53,6 +53,7 @@ raizes_nordeste/
 ├── README.md
 └── Rede Raízes do Nordeste - API.postman_collection.json
 ```
+Descrição dos principais diretórios e arquivos:
 - **database/migrations:** contém o arquivo de criação e estruturação das tabelas do banco de dados.
 - **src/api:** contém a configuração da API, suas rotas e middlewares.
 - **src/infrastructure:** contém recursos de infraestrutura, como a conexão com o banco de dados.
@@ -73,11 +74,15 @@ Para executar o projeto, é necessário ter instalado:
 Também é necessário ter acesso a um terminal para executar os comandos de instalação e inicialização.
 
 ## 6. Instalação das dependências
-Após clonar ou baixar o repositório, acesse a pasta do projeto pelo terminal:
+Primeiramente, clone o repositório do projeto:
+```bash
+git clone https://github.com/Selenna1/raizes_nordeste.git
+```
+Em seguida, acesse a pasta do projeto pelo terminal:
 ```bash
 cd raizes_nordeste
 ```
-Instale as dependências necessárias com o comando:
+Instale as dependências necessárias:
 ```bash
 npm install
 ```
@@ -89,22 +94,27 @@ Para configurar o banco:
 1. Abra o PostgreSQL pelo pgAdmin.
 2. Crie um banco de dados para o projeto.
 3. Acesse o banco criado e abra o Query Tool.
-4. Execute o conteúdo do arquivo `database/migrations/001_criar_tabelas.sql` para criar as tabelas e suas estruturas.
+4. Abra o arquivo `database/migrations/001_criar_tabelas.sql`, localizado no projeto.
+5. Execute o conteúdo do arquivo para criar as tabelas e suas estruturas.
 O nome do banco criado deverá ser informado na variável `DB_DATABASE` do arquivo `.env`.
-As configurações de conexão devem utilizar os dados do PostgreSQL instalado no ambiente de execução.
+As demais configurações de conexão devem utilizar os dados do PostgreSQL instalado no ambiente de execução.
 
 ## 8. Configuração das variáveis de ambiente
-Na raiz do projeto, crie um arquivo chamado `.env` e configure as variáveis necessárias para a conexão com o banco de dados e autenticação:
+Na raiz do projeto, crie um arquivo chamado `.env`, utilizando o arquivo `.env.example` como modelo.
+Configure as variáveis necessárias para a conexão com o banco de dados e autenticação:
 ```env
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=seu_usuario_postgres
 DB_PASSWORD=sua_senha_postgres
 DB_DATABASE=nome_do_banco
+
 ADMIN_NOME=Nome do administrador
 ADMIN_EMAIL=email_do_administrador
 ADMIN_SENHA=senha_do_administrador
+
 JWT_SECRET=chave_secreta_jwt
+
 ATENDENTE_NOME=Nome do atendente
 ATENDENTE_EMAIL=email_do_atendente
 ATENDENTE_SENHA=senha_do_atendente
@@ -137,7 +147,7 @@ npm run dev
 ```
 O projeto utiliza o Nodemon para monitorar alterações nos arquivos durante o desenvolvimento.
 Por padrão, a API é executada na porta 3000.
-Para verificar se o servidor está funcionando, acesse:
+Para verificar se o servidor está funcionando, acesse pelo navegador:
 ```text
 http://localhost:3000
 ```
@@ -146,15 +156,17 @@ A resposta esperada é uma mensagem informando que a API Rede Raízes do Nordest
 ## 11. Documentação da API (Swagger)
 A documentação dos endpoints foi desenvolvida utilizando Swagger com o padrão OpenAPI.
 Com o servidor em execução, a documentação pode ser acessada pelo navegador no endereço:
-```text id="x70f6h"
+```text
 http://localhost:3000/api-docs
 ```
 Por meio dessa interface, é possível consultar as rotas disponíveis, visualizar os parâmetros, verificar os formatos das requisições e respostas e realizar chamadas aos endpoints documentados.
+**Observação:** o Swagger é disponibilizado localmente. Para acessá-lo, é necessário configurar e iniciar a API conforme as instruções deste README.
 
 ## 12. Testes com Postman
 O projeto possui uma coleção do Postman com requisições organizadas por funcionalidades e cenários de erro.
 **Arquivo da coleção:**
 `Rede Raízes do Nordeste - API.postman_collection.json`
+O arquivo está localizado na raiz do repositório.
 Para executar os testes:
 1. Abra o Postman.
 2. Clique em **Import**.
@@ -164,3 +176,8 @@ Para executar os testes:
 6. Utilize o token correspondente ao perfil de usuário nos campos de variáveis utilizados pelas requisições protegidas.
 A coleção contempla testes de autenticação, unidades, produtos, estoque, pedidos, pagamentos e cenários de erro.
 **Observação:** algumas requisições dependem de registros existentes no banco de dados e de tokens de autenticação. Para testar as permissões, utilize tokens de usuários com os respectivos perfis de acesso, como ADMIN e ATENDENTE.
+
+## 13. Links do projeto
+- **Repositório GitHub:** https://github.com/Selenna1/raizes_nordeste
+- **Documentação Swagger:** http://localhost:3000/api-docs (acesso local, após iniciar a API).
+- **Coleção Postman:** disponível no arquivo `Rede Raízes do Nordeste - API.postman_collection.json`, localizado na raiz do repositório.
